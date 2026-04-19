@@ -1,9 +1,9 @@
 export const NAV_LINKS = [
-  { label: "關於我們", href: "#about" },
-  { label: "核心服務", href: "#services" },
-  { label: "最新消息", href: "#news" },
+  { label: "關於我們", href: "/#about" },
+  { label: "核心服務", href: "/#services" },
+  { label: "最新消息", href: "/#news" },
   { label: "教案產生器", href: "/lesson-generator" },
-  { label: "聯絡我們", href: "#contact" },
+  { label: "聯絡我們", href: "/#contact" },
 ];
 
 export const STATS = [
@@ -62,3 +62,9 @@ export const CONTACT_INFO = {
   phone: "(02) 2345-6789",
   address: "台北市大安區忠孝東路四段 100 號 5 樓",
 };
+
+export const SOCIAL_LINKS = [
+  { label: "Instagram", href: "https://www.instagram.com/bst4kidsbase/" },
+  { label: "Facebook", href: "https://www.facebook.com/BST4KidsBaseo" },
+  { label: "YouTube", href: "https://www.youtube.com/@BeFiring" },
+];

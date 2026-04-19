@@ -37,11 +37,11 @@ export default function HeroSection() {
         {/* Logo */}
         <div className="animate-hero-1 mb-8">
           <Image
-            src="/logo.jpg"
+            src="/logo.png"
             alt="人工智慧與機器人發展協會"
             width={280}
             height={100}
-            className="mix-blend-screen"
+            className="rounded-2xl bg-white/90 p-3"
             preload={true}
           />
         </div>

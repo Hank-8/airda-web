@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { NAV_LINKS } from "@/lib/constants";
+import Link from "next/link";
+import { NAV_LINKS, SOCIAL_LINKS } from "@/lib/constants";
 
 export default function Footer() {
   return (
@@ -10,11 +11,11 @@ export default function Footer() {
           <div>
             <div className="flex items-center gap-3 mb-4">
               <Image
-                src="/logo.jpg"
+                src="/logo.png"
                 alt="AIRDA"
                 width={32}
                 height={32}
-                className="rounded mix-blend-screen"
+                className="rounded-md bg-white/90 p-0.5"
               />
               <span className="font-semibold">AIRDA</span>
             </div>
@@ -32,13 +33,13 @@ export default function Footer() {
             <h4 className="text-sm font-medium mb-4">快速連結</h4>
             <div className="space-y-3">
               {NAV_LINKS.map((link) => (
-                <a
+                <Link
                   key={link.href}
                   href={link.href}
                   className="block text-sm text-text-tertiary hover:text-foreground transition-colors"
                 >
                   {link.label}
-                </a>
+                </Link>
               ))}
             </div>
           </div>
@@ -47,15 +48,17 @@ export default function Footer() {
           <div>
             <h4 className="text-sm font-medium mb-4">社群媒體</h4>
             <div className="space-y-3">
-              <a href="#" className="block text-sm text-text-tertiary hover:text-foreground transition-colors">
-                Facebook
-              </a>
-              <a href="#" className="block text-sm text-text-tertiary hover:text-foreground transition-colors">
-                Instagram
-              </a>
-              <a href="#" className="block text-sm text-text-tertiary hover:text-foreground transition-colors">
-                YouTube
-              </a>
+              {SOCIAL_LINKS.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block text-sm text-text-tertiary hover:text-foreground transition-colors"
+                >
+                  {link.label}
+                </a>
+              ))}
             </div>
           </div>
         </div>
