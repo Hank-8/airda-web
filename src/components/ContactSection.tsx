@@ -4,7 +4,7 @@ import { useState } from "react";
 import { CONTACT_INFO } from "@/lib/constants";
 import ScrollReveal from "./ScrollReveal";
 
-const WEB3FORMS_KEY = "38153966-fb12-403e-bc0f-24d0c57b068a";
+const WEB3FORMS_KEY = "ccc25a28-b051-4bd9-8dd6-4b6e764cb080";
 
 export default function ContactSection() {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
