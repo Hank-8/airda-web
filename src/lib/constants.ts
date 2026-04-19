@@ -58,9 +58,9 @@ export const NEWS = [
 ];
 
 export const CONTACT_INFO = {
-  email: "contact@airda.org.tw",
-  phone: "(02) 2345-6789",
-  address: "台北市大安區忠孝東路四段 100 號 5 樓",
+  email: "chrisni@bst4kids.com",
+  phone: "(02) 2958-2886",
+  address: "114 台北市內湖區康寧路三段 16 巷 28 號 1 樓",
 };
 
 export const SOCIAL_LINKS = [
