@@ -4,16 +4,36 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { NAV_LINKS } from "@/lib/constants";
+import { createClient } from "@/lib/supabase/client";
+import type { User } from "@supabase/supabase-js";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data }) => setUser(data.user));
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (_event, session) => setUser(session?.user ?? null)
+    );
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      subscription.unsubscribe();
+    };
   }, []);
+
+  async function handleLogout() {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    window.location.href = "/";
+  }
 
   return (
     <nav
@@ -51,6 +71,28 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
+
+          {/* Auth button */}
+          {user ? (
+            <div className="flex items-center gap-3">
+              <span className="text-xs text-text-tertiary truncate max-w-[120px]">
+                {user.email}
+              </span>
+              <button
+                onClick={handleLogout}
+                className="text-xs px-3 py-1.5 rounded-full border border-border-subtle text-text-secondary hover:text-foreground hover:border-foreground/20 transition-colors"
+              >
+                登出
+              </button>
+            </div>
+          ) : (
+            <Link
+              href="/login"
+              className="text-sm px-5 py-2 rounded-full bg-accent-blue text-white font-medium hover:bg-accent-blue-light transition-all"
+            >
+              登入
+            </Link>
+          )}
         </div>
 
         {/* Mobile hamburger */}
@@ -95,6 +137,27 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
+
+            {/* Mobile auth */}
+            {user ? (
+              <div className="pt-2 border-t border-border-subtle space-y-3">
+                <div className="text-sm text-text-tertiary truncate">{user.email}</div>
+                <button
+                  onClick={() => { handleLogout(); setMenuOpen(false); }}
+                  className="text-sm text-text-secondary hover:text-foreground transition-colors"
+                >
+                  登出
+                </button>
+              </div>
+            ) : (
+              <Link
+                href="/login"
+                onClick={() => setMenuOpen(false)}
+                className="text-base text-accent-blue hover:text-accent-blue-light font-medium transition-colors"
+              >
+                登入
+              </Link>
+            )}
           </div>
         </div>
       )}

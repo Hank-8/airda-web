@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import LessonGenerator from "@/components/LessonGenerator";
+import TrialExpired from "@/components/TrialExpired";
 
 export const metadata: Metadata = {
   title: "教案產生器 | AIRDA 人工智慧與機器人發展協會",
@@ -9,7 +12,23 @@ export const metadata: Metadata = {
     "輸入主題，即時產出完整 18 頁機器人教案大綱。適用於 Matrix Mini R4 感測器教學。",
 };
 
-export default function LessonGeneratorPage() {
+const TRIAL_DAYS = 30;
+
+export default async function LessonGeneratorPage() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login?redirect=/lesson-generator");
+  }
+
+  // 計算試用期
+  const createdAt = new Date(user.created_at);
+  const now = new Date();
+  const diffDays = Math.floor((now.getTime() - createdAt.getTime()) / (1000 * 60 * 60 * 24));
+  const daysLeft = Math.max(0, TRIAL_DAYS - diffDays);
+  const isExpired = daysLeft <= 0;
+
   return (
     <>
       <Navbar />
@@ -31,10 +50,20 @@ export default function LessonGeneratorPage() {
               基於 AIRDA 標準 18 頁教案架構，自動產生涵蓋理論講解、動手實作、
               程式教學與創意挑戰的完整教案大綱。
             </p>
+
+            {/* Trial status */}
+            {!isExpired && (
+              <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 text-xs">
+                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+                免費試用剩餘 {daysLeft} 天
+              </div>
+            )}
           </div>
 
-          {/* Generator */}
-          <LessonGenerator />
+          {/* Content or Paywall */}
+          {isExpired ? <TrialExpired /> : <LessonGenerator />}
         </div>
       </main>
       <Footer />
