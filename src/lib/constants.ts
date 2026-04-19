@@ -65,6 +65,6 @@ export const CONTACT_INFO = {
 
 export const SOCIAL_LINKS = [
   { label: "Instagram", href: "https://www.instagram.com/bst4kidsbase/" },
-  { label: "Facebook", href: "https://www.facebook.com/BST4KidsBaseo" },
+  { label: "Facebook", href: "https://www.facebook.com/BST4KidsBase?locale=zh_TW" },
   { label: "YouTube", href: "https://www.youtube.com/@BeFiring" },
 ];
