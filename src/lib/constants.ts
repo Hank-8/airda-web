@@ -3,6 +3,7 @@ export const NAV_LINKS = [
   { label: "核心服務", href: "/#services" },
   { label: "最新消息", href: "/#news" },
   { label: "教案產生器", href: "/lesson-generator" },
+  { label: "悟空儀表板", href: "/wukong-dashboard" },
   { label: "聯絡我們", href: "/#contact" },
 ];
 

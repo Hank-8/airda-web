@@ -30,15 +30,25 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // 未登入 → 教案產生器導向登入頁
+  // 未登入 → 受保護頁面導向登入頁
   if (
     !user &&
-    request.nextUrl.pathname.startsWith("/lesson-generator")
+    (request.nextUrl.pathname.startsWith("/lesson-generator") ||
+     request.nextUrl.pathname.startsWith("/wukong-dashboard"))
   ) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     url.searchParams.set("redirect", request.nextUrl.pathname);
     return NextResponse.redirect(url);
+  }
+
+  // 未登入 → 擋住 Vision-AI API 直接存取
+  if (
+    !user &&
+    (request.nextUrl.pathname.startsWith("/wukong-api") ||
+     request.nextUrl.pathname.startsWith("/ws"))
+  ) {
+    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
 
   // 已登入 → 不要停留在登入/註冊頁

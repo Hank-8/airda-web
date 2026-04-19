@@ -6,5 +6,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/lesson-generator/:path*", "/login", "/register"],
+  matcher: ["/lesson-generator/:path*", "/wukong-dashboard/:path*", "/wukong-api/:path*", "/ws/:path*", "/login", "/register"],
 };
