@@ -2,7 +2,7 @@
  * 呼叫 FastAPI 後端產生 PPTX 教案並觸發下載
  */
 
-const API_BASE = "https://airda-api-production.up.railway.app";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8001";
 
 export async function downloadLessonPPTX(topic: string): Promise<void> {
   const res = await fetch(`${API_BASE}/api/generate-lesson`, {

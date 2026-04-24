@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "framer-motion";
+import { Mail, Phone, MapPin, Send } from "lucide-react";
 import { CONTACT_INFO } from "@/lib/constants";
-import ScrollReveal from "./ScrollReveal";
 
-const WEB3FORMS_KEY = "ccc25a28-b051-4bd9-8dd6-4b6e764cb080";
+const WEB3FORMS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_KEY || "";
 
 export default function ContactSection() {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
@@ -38,61 +39,61 @@ export default function ContactSection() {
   }
 
   return (
-    <section id="contact" className="py-24 md:py-32 px-6">
-      <div className="mx-auto max-w-6xl">
-        {/* Title — rotate in */}
-        <ScrollReveal animation="rotate-in">
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-            聯絡我們
+    <section id="contact" className="relative py-20 lg:py-32 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Title */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="mb-16"
+        >
+          <h2 className="text-4xl sm:text-5xl font-bold font-serif mb-4">
+            聯絡<span className="text-gradient">我們</span>
           </h2>
-          <div className="mt-2 w-16 h-0.5 rounded-full animated-gradient-line" />
-        </ScrollReveal>
+          <div className="w-16 h-1 gradient-line rounded-full" />
+        </motion.div>
 
-        <div className="mt-16 grid md:grid-cols-2 gap-16">
-          {/* Contact info — slide in from left */}
-          <ScrollReveal animation="fade-left" delay={150}>
-            <div className="space-y-8">
-              <p className="text-text-secondary leading-relaxed">
-                歡迎與我們聯繫，無論是課程諮詢、合作提案或任何問題，我們都樂意為您服務。
-              </p>
+        <div className="grid md:grid-cols-2 gap-12">
+          {/* Contact Info */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="space-y-8"
+          >
+            <p className="text-lg text-text-secondary leading-relaxed">
+              歡迎與我們聯繫，無論是課程諮詢、合作提案或任何問題，我們都樂意為您服務。
+            </p>
 
-              <div className="space-y-6">
-                <div className="flex items-start gap-4">
-                  <svg className="w-5 h-5 text-accent-blue mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
-                  </svg>
+            <div className="space-y-6">
+              {[
+                { icon: <Mail size={20} />, label: "Email", value: CONTACT_INFO.email },
+                { icon: <Phone size={20} />, label: "電話", value: CONTACT_INFO.phone },
+                { icon: <MapPin size={20} />, label: "地址", value: CONTACT_INFO.address },
+              ].map((item) => (
+                <div key={item.label} className="flex items-start gap-4">
+                  <div className="p-2 rounded-lg bg-gradient-to-br from-accent-blue/20 to-accent-green/20 text-accent-blue shrink-0">
+                    {item.icon}
+                  </div>
                   <div>
-                    <div className="text-sm text-text-tertiary mb-1">Email</div>
-                    <div className="text-foreground">{CONTACT_INFO.email}</div>
+                    <div className="text-sm text-text-tertiary mb-1">{item.label}</div>
+                    <div className="text-foreground">{item.value}</div>
                   </div>
                 </div>
-
-                <div className="flex items-start gap-4">
-                  <svg className="w-5 h-5 text-accent-blue mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
-                  </svg>
-                  <div>
-                    <div className="text-sm text-text-tertiary mb-1">電話</div>
-                    <div className="text-foreground">{CONTACT_INFO.phone}</div>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <svg className="w-5 h-5 text-accent-blue mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                  </svg>
-                  <div>
-                    <div className="text-sm text-text-tertiary mb-1">地址</div>
-                    <div className="text-foreground">{CONTACT_INFO.address}</div>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
-          </ScrollReveal>
+          </motion.div>
 
-          {/* Contact form — flip in from Y axis */}
-          <ScrollReveal animation="flip-y" delay={250}>
+          {/* Contact Form */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
             <form className="space-y-5" onSubmit={handleSubmit}>
               <input type="hidden" name="subject" value="AIRDA 官網聯絡表單" />
               <div>
@@ -104,7 +105,7 @@ export default function ContactSection() {
                   id="name"
                   name="name"
                   required
-                  className="w-full rounded-lg border border-border-subtle bg-surface px-4 py-3 text-foreground text-sm outline-none focus:border-accent-blue/50 focus:shadow-[0_0_0_3px_rgba(37,99,235,0.1)] transition-all"
+                  className="w-full rounded-lg border border-border-subtle bg-surface px-4 py-3 text-foreground text-sm outline-none focus:border-accent-blue/50 focus:shadow-[0_0_0_3px_rgba(14,165,233,0.15)] transition-all"
                   placeholder="您的姓名"
                 />
               </div>
@@ -117,7 +118,7 @@ export default function ContactSection() {
                   id="email"
                   name="email"
                   required
-                  className="w-full rounded-lg border border-border-subtle bg-surface px-4 py-3 text-foreground text-sm outline-none focus:border-accent-blue/50 focus:shadow-[0_0_0_3px_rgba(37,99,235,0.1)] transition-all"
+                  className="w-full rounded-lg border border-border-subtle bg-surface px-4 py-3 text-foreground text-sm outline-none focus:border-accent-blue/50 focus:shadow-[0_0_0_3px_rgba(14,165,233,0.15)] transition-all"
                   placeholder="your@email.com"
                 />
               </div>
@@ -130,13 +131,13 @@ export default function ContactSection() {
                   name="message"
                   rows={5}
                   required
-                  className="w-full rounded-lg border border-border-subtle bg-surface px-4 py-3 text-foreground text-sm outline-none focus:border-accent-blue/50 focus:shadow-[0_0_0_3px_rgba(37,99,235,0.1)] transition-all resize-none"
+                  className="w-full rounded-lg border border-border-subtle bg-surface px-4 py-3 text-foreground text-sm outline-none focus:border-accent-blue/50 focus:shadow-[0_0_0_3px_rgba(14,165,233,0.15)] transition-all resize-none"
                   placeholder="請輸入您的訊息..."
                 />
               </div>
 
               {status === "success" && (
-                <div className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-400">
+                <div className="rounded-lg border border-accent-green/30 bg-accent-green/10 px-4 py-3 text-sm text-accent-green">
                   訊息已送出，我們會盡快回覆您！
                 </div>
               )}
@@ -149,12 +150,19 @@ export default function ContactSection() {
               <button
                 type="submit"
                 disabled={status === "sending"}
-                className="w-full rounded-lg bg-accent-blue px-6 py-3 text-white text-sm font-medium hover:bg-accent-blue-light hover:shadow-[0_0_24px_rgba(37,99,235,0.3)] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full btn btn-primary py-3 group"
               >
-                {status === "sending" ? "送出中..." : "送出訊息"}
+                {status === "sending" ? (
+                  "送出中..."
+                ) : (
+                  <>
+                    送出訊息
+                    <Send size={16} className="group-hover:translate-x-1 transition-transform" />
+                  </>
+                )}
               </button>
             </form>
-          </ScrollReveal>
+          </motion.div>
         </div>
       </div>
     </section>

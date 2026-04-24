@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { generateLessonPlan, type LessonPlan, type LessonSlide } from "@/lib/lesson-template";
 import { downloadLessonPPTX } from "@/lib/download-pptx";
-import ScrollReveal from "./ScrollReveal";
 
 const slideTypeColors: Record<string, string> = {
   cover: "border-accent-blue text-accent-blue",
@@ -47,10 +47,11 @@ function SlideCard({ slide, index }: { slide: LessonSlide; index: number }) {
   const label = slideTypeLabels[slide.type] || slide.type;
 
   return (
-    <ScrollReveal
-      animation={index % 3 === 0 ? "fade-left" : index % 3 === 1 ? "zoom-in" : "fade-right"}
-      delay={index * 60}
-      duration={500}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: index * 0.06 }}
+      viewport={{ once: true }}
     >
       <div
         className={`group rounded-xl border bg-surface overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(37,99,235,0.08)] ${
@@ -116,7 +117,7 @@ function SlideCard({ slide, index }: { slide: LessonSlide; index: number }) {
           </div>
         </div>
       </div>
-    </ScrollReveal>
+    </motion.div>
   );
 }
 
@@ -126,14 +127,23 @@ export default function LessonGenerator() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
 
+  const [downloadError, setDownloadError] = useState("");
+
   const handleDownloadPPTX = async () => {
     if (!plan) return;
     setIsDownloading(true);
+    setDownloadError("");
     try {
       await downloadLessonPPTX(plan.topic);
     } catch (e) {
-      console.error("PPTX generation failed:", e);
-      alert("PPTX 產生失敗，請確認後端服務已啟動。");
+      const msg = e instanceof Error ? e.message : "未知錯誤";
+      if (msg.includes("429")) {
+        setDownloadError("請求過於頻繁，請稍後再試。");
+      } else if (msg.includes("Failed to fetch") || msg.includes("NetworkError")) {
+        setDownloadError("無法連線到教案伺服器，請確認網路連線。");
+      } else {
+        setDownloadError(`教案產生失敗：${msg}`);
+      }
     } finally {
       setIsDownloading(false);
     }
@@ -219,7 +229,7 @@ export default function LessonGenerator() {
       {plan && !isGenerating && (
         <div className="space-y-8">
           {/* Plan header */}
-          <ScrollReveal animation="blur-in">
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }}>
             <div className="rounded-2xl border border-accent-blue/20 bg-surface p-6 md:p-8">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
@@ -279,8 +289,8 @@ export default function LessonGenerator() {
                 ))}
               </div>
 
-              {/* Download PDF button */}
-              <div className="mt-6 pt-6 border-t border-border-subtle">
+              {/* Download PPTX button */}
+              <div className="mt-6 pt-6 border-t border-border-subtle space-y-3">
                 <button
                   onClick={handleDownloadPPTX}
                   disabled={isDownloading}
@@ -291,7 +301,7 @@ export default function LessonGenerator() {
                       <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
                         <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeDasharray="31.4 31.4" strokeLinecap="round" />
                       </svg>
-                      PPTX 產生中...
+                      PPTX 產生中（AI 生成約需 10 秒）...
                     </>
                   ) : (
                     <>
@@ -302,9 +312,14 @@ export default function LessonGenerator() {
                     </>
                   )}
                 </button>
+                {downloadError && (
+                  <div className="rounded-lg border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-400">
+                    {downloadError}
+                  </div>
+                )}
               </div>
             </div>
-          </ScrollReveal>
+          </motion.div>
 
           {/* Slide cards grid */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">

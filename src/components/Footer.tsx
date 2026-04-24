@@ -4,20 +4,19 @@ import { NAV_LINKS, SOCIAL_LINKS } from "@/lib/constants";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-border-subtle bg-[#060609]">
-      <div className="mx-auto max-w-6xl px-6 py-16">
+    <footer className="border-t border-border-subtle bg-[#060918]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid sm:grid-cols-3 gap-12">
           {/* Brand */}
           <div>
             <div className="flex items-center gap-3 mb-4">
-              <Image
-                src="/logo.png"
-                alt="AIRDA"
-                width={32}
-                height={32}
-                className="rounded-md bg-white/90 p-0.5"
-              />
-              <span className="font-semibold">AIRDA</span>
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-accent-blue to-accent-green flex items-center justify-center">
+                <span className="text-white font-bold text-sm">AR</span>
+              </div>
+              <div>
+                <div className="font-bold text-sm font-serif">AIRDA</div>
+                <div className="text-text-tertiary text-xs">協會</div>
+              </div>
             </div>
             <p className="text-sm text-text-tertiary leading-relaxed">
               人工智慧與機器人發展協會
@@ -36,7 +35,7 @@ export default function Footer() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="block text-sm text-text-tertiary hover:text-foreground transition-colors"
+                  className="block text-sm text-text-tertiary hover:text-accent-blue transition-colors"
                 >
                   {link.label}
                 </Link>
@@ -54,7 +53,7 @@ export default function Footer() {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block text-sm text-text-tertiary hover:text-foreground transition-colors"
+                  className="block text-sm text-text-tertiary hover:text-accent-blue transition-colors"
                 >
                   {link.label}
                 </a>

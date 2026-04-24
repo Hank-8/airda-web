@@ -1,97 +1,126 @@
+"use client";
+
 import Image from "next/image";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.2, delayChildren: 0.3 },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" as const } },
+};
 
 export default function HeroSection() {
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden">
-      {/* Background glow */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse 60% 50% at 50% 40%, rgba(37, 99, 235, 0.12) 0%, transparent 70%)",
-        }}
-      />
+    <section className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0F1535] via-[#0A0E27] to-[#0A0E27] opacity-50" />
 
-      {/* Grid pattern overlay */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.03]"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
-          backgroundSize: "64px 64px",
-        }}
-      />
-
-      {/* Floating decorative elements */}
-      <div className="absolute top-1/4 left-[10%] w-2 h-2 rounded-full bg-accent-blue/30 animate-float" />
-      <div
-        className="absolute top-1/3 right-[15%] w-1.5 h-1.5 rounded-full bg-accent-cyan/30"
-        style={{ animation: "float 4s ease-in-out 1s infinite" }}
-      />
-      <div
-        className="absolute bottom-1/3 left-[20%] w-1 h-1 rounded-full bg-accent-blue-light/20"
-        style={{ animation: "float 3.5s ease-in-out 0.5s infinite" }}
-      />
-
-      <div className="relative z-10 flex flex-col items-center text-center max-w-3xl">
-        {/* Logo */}
-        <div className="animate-hero-1 mb-8">
-          <Image
-            src="/logo.png"
-            alt="人工智慧與機器人發展協會"
-            width={280}
-            height={100}
-            className="rounded-2xl bg-white/90 p-3"
-            preload={true}
+      {/* Animated particles */}
+      <div className="absolute inset-0">
+        {[...Array(20)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-1 h-1 bg-accent-blue rounded-full"
+            animate={{
+              x: [0, Math.random() * 100 - 50],
+              y: [0, Math.random() * 100 - 50],
+              opacity: [0.5, 0, 0.5],
+            }}
+            transition={{
+              duration: 8 + Math.random() * 4,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+            }}
           />
-        </div>
+        ))}
+      </div>
 
-        {/* Chinese title */}
-        <h1 className="animate-hero-2 text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight">
+      <motion.div
+        className="relative z-10 max-w-4xl mx-auto px-4 text-center"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        {/* Logo Card */}
+        <motion.div variants={itemVariants} className="mb-8 inline-block">
+          <div className="card p-8 border-accent-blue/30 bg-surface/50">
+            <Image
+              src="/logo.png"
+              alt="AIRDA"
+              width={120}
+              height={120}
+              className="mx-auto mb-4 rounded-xl bg-white/90 p-2"
+            />
+            <p className="text-text-secondary text-sm font-medium">
+              人工智慧與機器人發展協會
+            </p>
+          </div>
+        </motion.div>
+
+        {/* Main Title */}
+        <motion.h1
+          variants={itemVariants}
+          className="text-5xl sm:text-6xl lg:text-7xl font-bold font-serif mb-4 leading-tight"
+        >
           人工智慧與機器人
           <br />
-          <span className="text-accent-blue">發展協會</span>
-        </h1>
+          <span className="text-gradient">發展協會</span>
+        </motion.h1>
 
-        {/* English subtitle */}
-        <p className="animate-hero-3 mt-4 text-sm md:text-base text-text-secondary tracking-widest uppercase">
+        {/* Subtitle */}
+        <motion.p
+          variants={itemVariants}
+          className="text-xl text-text-secondary mb-4 font-medium"
+        >
           Artificial Intelligence and Robotics Development Association
-        </p>
+        </motion.p>
 
-        {/* Animated gradient divider */}
-        <div className="animate-hero-3 mt-6 w-24 h-0.5 rounded-full animated-gradient-line" />
-
-        {/* Slogan */}
-        <p className="animate-hero-3 mt-6 text-lg md:text-xl text-text-secondary max-w-xl">
+        {/* Description */}
+        <motion.p
+          variants={itemVariants}
+          className="text-lg text-text-secondary mb-12 max-w-2xl mx-auto leading-relaxed"
+        >
           推動 AI 與機器人技術的創新、教育與產學合作
-        </p>
+        </motion.p>
 
-        {/* CTA */}
-        <div className="animate-hero-4 mt-10 flex flex-col sm:flex-row gap-4">
-          <a
-            href="#about"
-            className="px-8 py-3 rounded-full bg-accent-blue text-white font-medium text-sm hover:bg-accent-blue-light hover:shadow-[0_0_24px_rgba(37,99,235,0.4)] transition-all duration-300"
-          >
+        {/* CTA Buttons */}
+        <motion.div
+          variants={itemVariants}
+          className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+        >
+          <Link href="/#about" className="btn btn-primary px-8 py-4 text-lg group">
             了解更多
-          </a>
-          <a
-            href="#contact"
-            className="px-8 py-3 rounded-full border border-border-subtle text-text-secondary font-medium text-sm hover:text-foreground hover:border-foreground/20 transition-colors"
-          >
+            <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+          </Link>
+          <Link href="/#contact" className="btn btn-secondary px-8 py-4 text-lg">
             加入我們
-          </a>
-        </div>
-      </div>
+          </Link>
+        </motion.div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 animate-hero-4">
-        <div className="w-5 h-9 rounded-full border-2 border-text-tertiary flex items-start justify-center p-1">
-          <div
-            className="w-1 h-2 rounded-full bg-text-tertiary"
-            style={{ animation: "scrollBounce 1.8s ease-in-out infinite" }}
-          />
-        </div>
-      </div>
+        {/* Scroll Indicator */}
+        <motion.div
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+          className="mt-20 flex justify-center"
+        >
+          <div className="w-6 h-10 border-2 border-accent-blue rounded-full flex items-start justify-center p-2">
+            <div className="w-1 h-2 bg-accent-blue rounded-full animate-pulse" />
+          </div>
+        </motion.div>
+      </motion.div>
     </section>
   );
 }

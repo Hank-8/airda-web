@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { NAV_LINKS } from "@/lib/constants";
 import { createClient } from "@/lib/supabase/client";
@@ -45,15 +44,14 @@ export default function Navbar() {
     >
       <div className="mx-auto max-w-6xl flex items-center justify-between px-6 h-16">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-3">
-          <Image
-            src="/logo.png"
-            alt="AIRDA Logo"
-            width={36}
-            height={36}
-            className="rounded-lg bg-white/90 p-0.5"
-          />
-          <span className="text-lg font-semibold tracking-tight">AIRDA</span>
+        <Link href="/" className="flex items-center gap-3 group">
+          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-accent-blue to-accent-green flex items-center justify-center group-hover:shadow-lg group-hover:shadow-accent-blue/50 transition-all duration-300">
+            <span className="text-white font-bold text-sm">AR</span>
+          </div>
+          <div className="hidden sm:block">
+            <div className="text-white font-bold text-sm leading-tight font-serif">AIRDA</div>
+            <div className="text-text-secondary text-xs">協會</div>
+          </div>
         </Link>
 
         {/* Desktop nav */}

@@ -1,61 +1,87 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { Calendar, Tag } from "lucide-react";
 import { NEWS } from "@/lib/constants";
-import ScrollReveal from "./ScrollReveal";
+
+const categoryColors: Record<string, string> = {
+  "活動": "bg-accent-blue/20 text-accent-blue",
+  "公告": "bg-accent-green/20 text-accent-green",
+  "合作": "bg-blue-500/20 text-blue-400",
+};
 
 export default function NewsSection() {
   return (
-    <section id="news" className="py-24 md:py-32 px-6">
-      <div className="mx-auto max-w-6xl">
-        {/* Title — blur in */}
-        <ScrollReveal animation="blur-in">
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-            最新消息
+    <section id="news" className="relative py-20 lg:py-32 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Title */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="mb-16"
+        >
+          <h2 className="text-4xl sm:text-5xl font-bold font-serif mb-4">
+            最新<span className="text-gradient">消息</span>
           </h2>
-          <div className="mt-2 w-16 h-0.5 rounded-full animated-gradient-line" />
-        </ScrollReveal>
+          <div className="w-16 h-1 gradient-line rounded-full" />
+        </motion.div>
 
-        {/* News items — alternate slide left/right */}
-        <div className="mt-16 space-y-0">
-          {NEWS.map((item, i) => (
-            <ScrollReveal
+        {/* News List */}
+        <div className="space-y-6">
+          {NEWS.map((item, index) => (
+            <motion.div
               key={item.title}
-              animation={i % 2 === 0 ? "slide-left" : "slide-right"}
-              delay={i * 120}
-              duration={600}
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              viewport={{ once: true }}
+              className="card group hover:border-accent-blue/50 hover:shadow-lg hover:shadow-accent-blue/10"
             >
-              <article className="group border-b border-border-subtle py-8 first:pt-0 cursor-pointer hover:bg-surface-elevated/50 -mx-4 px-4 rounded-lg transition-colors">
-                <div className="flex flex-col sm:flex-row sm:items-start gap-4">
-                  <div className="flex items-center gap-3 sm:w-48 shrink-0">
-                    <time className="text-sm text-text-tertiary font-mono">
-                      {item.date}
-                    </time>
-                    <span className="text-xs px-2 py-0.5 rounded-full border border-accent-blue/30 text-accent-blue">
-                      {item.category}
-                    </span>
+              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4">
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2 text-text-secondary text-sm">
+                    <Calendar size={16} />
+                    <span>{item.date}</span>
                   </div>
-                  <div className="flex-1">
-                    <h3 className="text-lg font-medium group-hover:text-accent-blue-light transition-colors">
-                      {item.title}
-                    </h3>
-                    <p className="mt-2 text-sm text-text-secondary leading-relaxed">
-                      {item.summary}
-                    </p>
-                  </div>
+                  <span
+                    className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                      categoryColors[item.category] || "bg-accent-blue/20 text-accent-blue"
+                    }`}
+                  >
+                    {item.category}
+                  </span>
                 </div>
-              </article>
-            </ScrollReveal>
+              </div>
+              <h3 className="text-2xl font-bold font-serif mb-3 group-hover:text-accent-blue transition-colors">
+                {item.title}
+              </h3>
+              <p className="text-text-secondary leading-relaxed mb-4">
+                {item.summary}
+              </p>
+              <button className="text-accent-blue hover:text-accent-green transition-colors font-semibold text-sm flex items-center gap-2 group/btn">
+                閱讀更多
+                <span className="group-hover/btn:translate-x-1 transition-transform">
+                  &rarr;
+                </span>
+              </button>
+            </motion.div>
           ))}
         </div>
 
-        <ScrollReveal animation="zoom-in" delay={400}>
-          <div className="mt-12 text-center">
-            <a
-              href="#"
-              className="text-sm text-accent-blue hover:text-accent-blue-light transition-colors"
-            >
-              查看全部消息 &rarr;
-            </a>
-          </div>
-        </ScrollReveal>
+        {/* View All */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          viewport={{ once: true }}
+          className="mt-12 text-center"
+        >
+          <button className="btn btn-secondary px-8 py-3">
+            查看全部消息 &rarr;
+          </button>
+        </motion.div>
       </div>
     </section>
   );

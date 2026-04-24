@@ -1,15 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0a0a0f;
-  --foreground: #e5e7eb;
-  --accent-blue: #2563eb;
-  --accent-blue-light: #3b82f6;
+  --background: #0A0E27;
+  --foreground: #FFFFFF;
+  --accent-blue: #0EA5E9;
+  --accent-blue-light: #38BDF8;
   --accent-cyan: #06b6d4;
-  --surface: rgba(255, 255, 255, 0.03);
-  --surface-elevated: rgba(255, 255, 255, 0.06);
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --text-secondary: #9ca3af;
+  --accent-green: #10B981;
+  --accent-green-light: #34D399;
+  --surface: rgba(15, 21, 53, 0.8);
+  --surface-elevated: rgba(26, 31, 58, 0.9);
+  --border-subtle: rgba(38, 38, 38, 0.5);
+  --text-secondary: #A3A3A3;
   --text-tertiary: #6b7280;
   /* 悟空儀表板配色 */
   --accent-amber: #f59e0b;
@@ -25,6 +27,8 @@
   --color-accent-blue: var(--accent-blue);
   --color-accent-blue-light: var(--accent-blue-light);
   --color-accent-cyan: var(--accent-cyan);
+  --color-accent-green: var(--accent-green);
+  --color-accent-green-light: var(--accent-green-light);
   --color-surface: var(--surface);
   --color-surface-elevated: var(--surface-elevated);
   --color-border-subtle: var(--border-subtle);
@@ -33,6 +37,7 @@
   --color-accent-amber: var(--accent-amber);
   --color-accent-emerald: var(--accent-emerald);
   --font-sans: var(--font-geist-sans), var(--font-noto-sans-tc), sans-serif;
+  --font-serif: var(--font-noto-serif-tc), serif;
   --font-mono: var(--font-geist-mono);
 }
 
@@ -43,176 +48,98 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
+  overflow-x: hidden;
 }
 
 /* ========================================
-   Hero Animations
+   Glassmorphism Card
    ======================================== */
-@keyframes heroFadeIn {
-  from { opacity: 0; transform: translateY(32px); }
-  to { opacity: 1; transform: translateY(0); }
+.card {
+  background: rgba(15, 21, 53, 0.8);
+  border: 1px solid rgba(38, 38, 38, 0.5);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+.card:hover {
+  border-color: rgba(14, 165, 233, 0.3);
+  box-shadow: 0 8px 32px rgba(14, 165, 233, 0.1);
+  transform: translateY(-4px);
 }
 
-.animate-hero-1 {
-  animation: heroFadeIn 0.8s ease-out 0.1s both;
-}
-.animate-hero-2 {
-  animation: heroFadeIn 0.8s ease-out 0.3s both;
-}
-.animate-hero-3 {
-  animation: heroFadeIn 0.8s ease-out 0.5s both;
-}
-.animate-hero-4 {
-  animation: heroFadeIn 0.8s ease-out 0.7s both;
+/* ========================================
+   Gradient Text
+   ======================================== */
+.text-gradient {
+  background: linear-gradient(135deg, #0EA5E9 0%, #10B981 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-/* Wukong dashboard slide-up animation */
+/* ========================================
+   Buttons
+   ======================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+}
+.btn-primary {
+  background: linear-gradient(135deg, #0EA5E9 0%, #0284C7 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(14, 165, 233, 0.5);
+}
+.btn-secondary {
+  background: transparent;
+  color: #10B981;
+  border: 2px solid #10B981;
+}
+.btn-secondary:hover {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: #34D399;
+  color: #34D399;
+}
+
+/* ========================================
+   Particle Background
+   ======================================== */
+.particle-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 20% 50%, rgba(14, 165, 233, 0.08) 0%, transparent 50%),
+              radial-gradient(circle at 80% 80%, rgba(16, 185, 129, 0.08) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ========================================
+   Gradient Divider
+   ======================================== */
+.gradient-line {
+  background: linear-gradient(90deg, #0EA5E9, #10B981);
+}
+
+/* ========================================
+   Wukong dashboard slide-up animation
+   ======================================== */
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-/* Scroll indicator bounce */
-@keyframes scrollBounce {
-  0%, 100% { transform: translateY(0); opacity: 0.4; }
-  50% { transform: translateY(6px); opacity: 1; }
-}
-
-/* Continuous glow pulse */
-@keyframes glowPulse {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 0.8; }
-}
-
-/* ========================================
-   ScrollReveal Animation System
-   ======================================== */
-.scroll-reveal {
-  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-  transition-property: opacity, transform, filter;
-  will-change: opacity, transform;
-}
-
-/* --- Fade variants --- */
-.sr-fade-up {
-  opacity: 0;
-  transform: translateY(40px);
-}
-.sr-fade-down {
-  opacity: 0;
-  transform: translateY(-40px);
-}
-.sr-fade-left {
-  opacity: 0;
-  transform: translateX(-60px);
-}
-.sr-fade-right {
-  opacity: 0;
-  transform: translateX(60px);
-}
-
-/* --- Zoom variants --- */
-.sr-zoom-in {
-  opacity: 0;
-  transform: scale(0.85);
-}
-.sr-zoom-out {
-  opacity: 0;
-  transform: scale(1.15);
-}
-
-/* --- Rotate variants --- */
-.sr-rotate-in {
-  opacity: 0;
-  transform: rotate(-8deg) scale(0.9);
-}
-.sr-rotate-left {
-  opacity: 0;
-  transform: rotate(-12deg) translateX(-30px);
-}
-.sr-rotate-right {
-  opacity: 0;
-  transform: rotate(12deg) translateX(30px);
-}
-
-/* --- Flip variants --- */
-.sr-flip-x {
-  opacity: 0;
-  transform: perspective(800px) rotateX(25deg) translateY(20px);
-}
-.sr-flip-y {
-  opacity: 0;
-  transform: perspective(800px) rotateY(25deg) translateX(20px);
-}
-
-/* --- Slide variants (larger movement, no fade) --- */
-.sr-slide-up {
-  opacity: 0;
-  transform: translateY(80px);
-}
-.sr-slide-left {
-  opacity: 0;
-  transform: translateX(-100px);
-}
-.sr-slide-right {
-  opacity: 0;
-  transform: translateX(100px);
-}
-
-/* --- Blur variant --- */
-.sr-blur-in {
-  opacity: 0;
-  filter: blur(12px);
-  transform: scale(0.95);
-}
-
-/* --- Revealed state (all variants) --- */
-.scroll-reveal.revealed {
-  opacity: 1;
-  transform: none;
-  filter: none;
-}
-
-/* ========================================
-   Icon spin on hover (service cards)
-   ======================================== */
-.icon-spin-hover {
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.group:hover .icon-spin-hover {
-  transform: rotate(360deg);
-}
-
-/* ========================================
-   Floating animation (continuous)
-   ======================================== */
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
-
-/* ========================================
-   Stagger children helper
-   ======================================== */
-.stagger-children > .scroll-reveal:nth-child(1) { transition-delay: 0ms; }
-.stagger-children > .scroll-reveal:nth-child(2) { transition-delay: 120ms; }
-.stagger-children > .scroll-reveal:nth-child(3) { transition-delay: 240ms; }
-.stagger-children > .scroll-reveal:nth-child(4) { transition-delay: 360ms; }
-.stagger-children > .scroll-reveal:nth-child(5) { transition-delay: 480ms; }
-
-/* ========================================
-   Gradient line animation
-   ======================================== */
-@keyframes gradientSlide {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-.animated-gradient-line {
-  background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan), var(--accent-blue));
-  background-size: 200% 100%;
-  animation: gradientSlide 3s ease infinite;
 }
