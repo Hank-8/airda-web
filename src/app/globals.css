@@ -137,6 +137,37 @@ body {
 }
 
 /* ========================================
+   Full-screen scroll snap
+   ======================================== */
+.snap-container {
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+  height: 100vh;
+  scroll-behavior: smooth;
+}
+.snap-container::-webkit-scrollbar {
+  display: none;
+}
+.snap-container {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.snap-section {
+  scroll-snap-align: start;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+/* FAQ/Contact 內容較多時允許超出 */
+.snap-section-flex {
+  scroll-snap-align: start;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* ========================================
    Wukong dashboard slide-up animation
    ======================================== */
 @keyframes slideUp {
