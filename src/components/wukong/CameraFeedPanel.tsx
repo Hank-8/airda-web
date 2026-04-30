@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { useDashboard } from "@/components/wukong/DashboardContext";
 import type { AIAnalysisResult } from "@/types/wukong";
 import NotebookLMToolbar from "@/components/wukong/NotebookLMToolbar";
-import { FASTAPI } from "@/lib/wukong/config";
+import { FASTAPI, wukongFetch } from "@/lib/wukong/config";
 
 type CameraState = "idle" | "active" | "error";
 
@@ -102,7 +102,7 @@ export default function CameraFeedPanel() {
     formData.append("file", blob, `capture_${Date.now()}.png`);
 
     try {
-      const res = await fetch(`${FASTAPI}/api/scanner/upload`, {
+      const res = await wukongFetch(`${FASTAPI}/api/scanner/upload`, {
         method: "POST",
         body: formData,
       });
@@ -149,7 +149,7 @@ export default function CameraFeedPanel() {
       if (!lastResult || answerRecorded) return;
 
       try {
-        await fetch(`${FASTAPI}/api/analytics/quiz/record`, {
+        await wukongFetch(`${FASTAPI}/api/analytics/quiz/record`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

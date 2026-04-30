@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import type { SubsystemStatus } from "@/types/wukong";
 import StatusCard from "@/components/wukong/StatusCard";
 import { useDashboard } from "@/components/wukong/DashboardContext";
-import { FASTAPI } from "@/lib/wukong/config";
+import { FASTAPI, wukongFetch } from "@/lib/wukong/config";
 
 export default function LiveStatusCards() {
   const { refreshKey, backendOnline } = useDashboard();
@@ -13,7 +13,7 @@ export default function LiveStatusCards() {
   useEffect(() => {
     if (!backendOnline) return;
 
-    fetch(`${FASTAPI}/api/dashboard/subsystems`)
+    wukongFetch(`${FASTAPI}/api/dashboard/subsystems`)
       .then((r) => r.json())
       .then((data) => setSubsystems(data))
       .catch(() => {});

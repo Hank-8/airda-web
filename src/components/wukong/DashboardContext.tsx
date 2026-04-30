@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useCallback, useEffect, useRef } from "react";
-import { FASTAPI } from "@/lib/wukong/config";
+import { FASTAPI, wukongFetch } from "@/lib/wukong/config";
 import { useWukongWS } from "@/lib/wukong/useWukongWS";
 
 const POLL_INTERVAL = 5000;
@@ -44,7 +44,7 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
   // 定時輪詢 + 檢查後端狀態（WebSocket 斷線時的 fallback）
   useEffect(() => {
     const check = () => {
-      fetch("/wukong-health")
+      wukongFetch("/wukong-health")
         .then((r) => {
           setBackendOnline(r.ok);
           if (r.ok) setRefreshKey((k) => k + 1);

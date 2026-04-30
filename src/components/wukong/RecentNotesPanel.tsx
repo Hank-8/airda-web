@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useDashboard } from "@/components/wukong/DashboardContext";
-import { FASTAPI } from "@/lib/wukong/config";
+import { FASTAPI, wukongFetch } from "@/lib/wukong/config";
 import type { AnalyticsData, QuizResultRecord } from "@/types/wukong";
 import Modal from "@/components/wukong/Modal";
 
@@ -83,12 +83,12 @@ export default function RecentNotesPanel() {
   useEffect(() => {
     if (!backendOnline) return;
 
-    fetch(`${FASTAPI}/api/analytics/summary`)
+    wukongFetch(`${FASTAPI}/api/analytics/summary`)
       .then((r) => r.json())
       .then(setAnalytics)
       .catch(() => {});
 
-    fetch(`${FASTAPI}/api/knowledge/recent?limit=3`)
+    wukongFetch(`${FASTAPI}/api/knowledge/recent?limit=3`)
       .then((r) => r.json())
       .then(setNotes)
       .catch(() => {});
@@ -101,7 +101,7 @@ export default function RecentNotesPanel() {
     setLoadingHistory(true);
 
     try {
-      const res = await fetch(`${FASTAPI}/api/analytics/quiz/history?subject=${encodeURIComponent(subject)}&limit=500`);
+      const res = await wukongFetch(`${FASTAPI}/api/analytics/quiz/history?subject=${encodeURIComponent(subject)}&limit=500`);
       if (res.ok) {
         const data = await res.json();
         setQuizHistory(data);

@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useDashboard } from "@/components/wukong/DashboardContext";
 import type { AnalyticsData } from "@/types/wukong";
-import { FASTAPI } from "@/lib/wukong/config";
+import { FASTAPI, wukongFetch } from "@/lib/wukong/config";
 import Modal from "@/components/wukong/Modal";
 
 const SUBJECT_BAR_COLORS: Record<string, string> = {
@@ -23,7 +23,7 @@ export default function AnalyticsPanel() {
   const fetchData = useCallback(async () => {
     if (!backendOnline) return;
     try {
-      const res = await fetch(`${FASTAPI}/api/analytics/summary`);
+      const res = await wukongFetch(`${FASTAPI}/api/analytics/summary`);
       if (res.ok) {
         setData(await res.json());
       }
@@ -40,7 +40,7 @@ export default function AnalyticsPanel() {
 
   const exportMarkdown = async () => {
     try {
-      const res = await fetch(`${FASTAPI}/api/analytics/export/markdown`);
+      const res = await wukongFetch(`${FASTAPI}/api/analytics/export/markdown`);
       if (!res.ok) return;
       const text = await res.text();
       const blob = new Blob([text], { type: "text/markdown" });
@@ -57,7 +57,7 @@ export default function AnalyticsPanel() {
 
   const exportJSON = async () => {
     try {
-      const res = await fetch(`${FASTAPI}/api/analytics/export/json`);
+      const res = await wukongFetch(`${FASTAPI}/api/analytics/export/json`);
       if (!res.ok) return;
       const json = await res.json();
       const blob = new Blob([JSON.stringify(json, null, 2)], {

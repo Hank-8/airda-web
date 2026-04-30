@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useDashboard } from "@/components/wukong/DashboardContext";
-import { FASTAPI } from "@/lib/wukong/config";
+import { FASTAPI, wukongFetch } from "@/lib/wukong/config";
 import Modal from "@/components/wukong/Modal";
 
 const POSTURE_INTERVAL = 3000;
@@ -109,7 +109,7 @@ export default function FocusMetricsPanel() {
     formData.append("file", blob, "posture.jpg");
 
     try {
-      const res = await fetch(`${FASTAPI}/api/posture/analyze`, {
+      const res = await wukongFetch(`${FASTAPI}/api/posture/analyze`, {
         method: "POST",
         body: formData,
       });
@@ -135,12 +135,12 @@ export default function FocusMetricsPanel() {
   useEffect(() => {
     if (!backendOnline) return;
 
-    fetch(`${FASTAPI}/api/posture/stats`)
+    wukongFetch(`${FASTAPI}/api/posture/stats`)
       .then((r) => r.json())
       .then(setStats)
       .catch(() => {});
 
-    fetch(`${FASTAPI}/api/knowledge/stats`)
+    wukongFetch(`${FASTAPI}/api/knowledge/stats`)
       .then((r) => r.json())
       .then(setKnowledgeStats)
       .catch(() => {});

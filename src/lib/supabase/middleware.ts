@@ -50,6 +50,7 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
 
+
   // 已登入 → 不要停留在登入/註冊頁
   if (
     user &&

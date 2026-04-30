@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useCallback, useState } from "react";
-import { WS_URL } from "@/lib/wukong/config";
+import { WS_URL, PROXY_TOKEN } from "@/lib/wukong/config";
 
 type MessageHandler = (channel: string, data: unknown) => void;
 
@@ -26,7 +26,8 @@ export function useWukongWS(channels: string[], onMessage: MessageHandler) {
     const wsBase = WS_URL || (typeof window !== "undefined"
       ? `${window.location.protocol === "https:" ? "wss:" : "ws:"}//${window.location.host}`
       : "ws://localhost:8000");
-    const ws = new WebSocket(`${wsBase}/ws/dashboard`);
+    const tokenParam = PROXY_TOKEN ? `?token=${PROXY_TOKEN}` : "";
+    const ws = new WebSocket(`${wsBase}/ws/dashboard${tokenParam}`);
     wsRef.current = ws;
 
     ws.onopen = () => {

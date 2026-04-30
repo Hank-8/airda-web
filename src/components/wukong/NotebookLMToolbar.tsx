@@ -8,7 +8,7 @@ import type {
   PresentationData,
   QuizData,
 } from "@/types/wukong";
-import { FASTAPI } from "@/lib/wukong/config";
+import { FASTAPI, wukongFetch } from "@/lib/wukong/config";
 
 type ContentType = "mindmap" | "chart" | "presentation" | "quiz";
 type GeneratedContent =
@@ -72,7 +72,7 @@ export default function NotebookLMToolbar({ analysisResult }: Props) {
       const timeout = setTimeout(() => controller.abort(), 120000); // 2 分鐘超時
 
       try {
-        const res = await fetch(`${FASTAPI}/api/content/${type}`, {
+        const res = await wukongFetch(`${FASTAPI}/api/content/${type}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
