@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Calendar, Tag } from "lucide-react";
+import { Calendar } from "lucide-react";
 import { NEWS } from "@/lib/constants";
 
 const categoryColors: Record<string, string> = {
@@ -14,7 +14,7 @@ export default function NewsSection() {
   return (
     <section id="news" className="relative py-20 lg:py-32 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Title */}
+        {/* Title */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -28,15 +28,29 @@ export default function NewsSection() {
           <div className="w-16 h-1 gradient-line rounded-full" />
         </motion.div>
 
-        {/* News List */}
+        {/* 堆疊展開 — 卡片從重疊散開 */}
         <div className="space-y-6">
           {NEWS.map((item, index) => (
             <motion.div
               key={item.title}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              viewport={{ once: true }}
+              initial={{
+                opacity: 0,
+                y: -index * 30,
+                scale: 1 - index * 0.03,
+                rotate: index % 2 === 0 ? -1 : 1,
+              }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                rotate: 0,
+              }}
+              transition={{
+                duration: 0.7,
+                delay: index * 0.15,
+                ease: "easeOut" as const,
+              }}
+              viewport={{ once: true, margin: "-30px" }}
               className="card group hover:border-accent-blue/50 hover:shadow-lg hover:shadow-accent-blue/10"
             >
               <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4">
@@ -45,11 +59,7 @@ export default function NewsSection() {
                     <Calendar size={16} />
                     <span>{item.date}</span>
                   </div>
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                      categoryColors[item.category] || "bg-accent-blue/20 text-accent-blue"
-                    }`}
-                  >
+                  <span className={`px-3 py-1 rounded-full text-xs font-semibold ${categoryColors[item.category] || "bg-accent-blue/20 text-accent-blue"}`}>
                     {item.category}
                   </span>
                 </div>
@@ -62,15 +72,12 @@ export default function NewsSection() {
               </p>
               <button className="text-accent-blue hover:text-accent-green transition-colors font-semibold text-sm flex items-center gap-2 group/btn">
                 閱讀更多
-                <span className="group-hover/btn:translate-x-1 transition-transform">
-                  &rarr;
-                </span>
+                <span className="group-hover/btn:translate-x-1 transition-transform">&rarr;</span>
               </button>
             </motion.div>
           ))}
         </div>
 
-        {/* View All */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

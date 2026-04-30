@@ -11,7 +11,7 @@ const stats = [
   { icon: <Sparkles size={24} />, value: 2024, suffix: "", label: "成立年份" },
 ];
 
-function AnimatedCounter({ value, suffix, duration = 2 }: { value: number; suffix: string; duration?: number }) {
+function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true });
@@ -19,51 +19,31 @@ function AnimatedCounter({ value, suffix, duration = 2 }: { value: number; suffi
   useEffect(() => {
     if (!inView) return;
     let start = 0;
-    const end = value;
-    const stepTime = (duration * 1000) / end;
-    const increment = Math.max(1, Math.floor(end / 60));
-
+    const increment = Math.max(1, Math.floor(value / 50));
     const timer = setInterval(() => {
       start += increment;
-      if (start >= end) {
-        setCount(end);
-        clearInterval(timer);
-      } else {
-        setCount(start);
-      }
-    }, stepTime * increment);
-
+      if (start >= value) { setCount(value); clearInterval(timer); }
+      else setCount(start);
+    }, 30);
     return () => clearInterval(timer);
-  }, [inView, value, duration]);
+  }, [inView, value]);
 
-  return (
-    <span ref={ref}>
-      {count.toLocaleString()}{suffix}
-    </span>
-  );
+  return <span ref={ref}>{count.toLocaleString()}{suffix}</span>;
 }
 
 export default function StatsSection() {
   return (
     <section className="relative py-20 lg:py-28 overflow-hidden">
-      {/* Subtle background */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#0A0E27] via-[#0D1230] to-[#0A0E27]" />
-
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8"
-        >
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {stats.map((stat, i) => (
             <motion.div
               key={stat.label}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: i * 0.1 }}
-              viewport={{ once: true }}
+              initial={{ opacity: 0, x: i % 2 === 0 ? -80 : 80 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7, delay: i * 0.12, ease: "easeOut" as const }}
+              viewport={{ once: true, margin: "-50px" }}
               className="text-center group"
             >
               <div className="card p-6 lg:p-8 hover:border-accent-blue/40 transition-all">
@@ -77,7 +57,7 @@ export default function StatsSection() {
               </div>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

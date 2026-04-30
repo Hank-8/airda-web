@@ -56,12 +56,12 @@ export default function ContactSection() {
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-12">
-          {/* Contact Info */}
+          {/* Contact Info — 從左推開 */}
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
+            initial={{ opacity: 0, x: -100, filter: "blur(8px)" }}
+            whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+            transition={{ duration: 0.8, ease: "easeOut" as const }}
+            viewport={{ once: true, margin: "-50px" }}
             className="space-y-8"
           >
             <p className="text-lg text-text-secondary leading-relaxed">
@@ -88,11 +88,12 @@ export default function ContactSection() {
           </motion.div>
 
           {/* Contact Form */}
+          {/* 表單 — 從右推開 */}
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
+            initial={{ opacity: 0, x: 100, filter: "blur(8px)" }}
+            whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+            transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" as const }}
+            viewport={{ once: true, margin: "-50px" }}
           >
             <form className="space-y-5" onSubmit={handleSubmit}>
               <input type="hidden" name="subject" value="AIRDA 官網聯絡表單" />
