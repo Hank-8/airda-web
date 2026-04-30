@@ -84,13 +84,13 @@ export default function RecentNotesPanel() {
     if (!backendOnline) return;
 
     wukongFetch(`${FASTAPI}/api/analytics/summary`)
-      .then((r) => r.json())
-      .then(setAnalytics)
+      .then((r) => r.ok ? r.json() : null)
+      .then((d) => { if (d && !d.error) setAnalytics(d); })
       .catch(() => {});
 
     wukongFetch(`${FASTAPI}/api/knowledge/recent?limit=3`)
-      .then((r) => r.json())
-      .then(setNotes)
+      .then((r) => r.ok ? r.json() : [])
+      .then((d) => { if (Array.isArray(d)) setNotes(d); })
       .catch(() => {});
   }, [refreshKey, backendOnline]);
 
@@ -104,7 +104,7 @@ export default function RecentNotesPanel() {
       const res = await wukongFetch(`${FASTAPI}/api/analytics/quiz/history?subject=${encodeURIComponent(subject)}&limit=500`);
       if (res.ok) {
         const data = await res.json();
-        setQuizHistory(data);
+        if (Array.isArray(data)) setQuizHistory(data);
       }
     } catch {
       // ignore

@@ -136,13 +136,13 @@ export default function FocusMetricsPanel() {
     if (!backendOnline) return;
 
     wukongFetch(`${FASTAPI}/api/posture/stats`)
-      .then((r) => r.json())
-      .then(setStats)
+      .then((r) => r.ok ? r.json() : null)
+      .then((d) => { if (d && !d.error) setStats(d); })
       .catch(() => {});
 
     wukongFetch(`${FASTAPI}/api/knowledge/stats`)
-      .then((r) => r.json())
-      .then(setKnowledgeStats)
+      .then((r) => r.ok ? r.json() : null)
+      .then((d) => { if (d && !d.error) setKnowledgeStats(d); })
       .catch(() => {});
   }, [refreshKey, backendOnline, posture]);
 

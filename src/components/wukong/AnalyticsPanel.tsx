@@ -25,7 +25,13 @@ export default function AnalyticsPanel() {
     try {
       const res = await wukongFetch(`${FASTAPI}/api/analytics/summary`);
       if (res.ok) {
-        setData(await res.json());
+        const raw = await res.json();
+        if (raw && typeof raw === "object" && !raw.error) {
+          raw.recent_trend = Array.isArray(raw.recent_trend) ? raw.recent_trend : [];
+          raw.weak_areas = Array.isArray(raw.weak_areas) ? raw.weak_areas : [];
+          raw.subject_accuracy = raw.subject_accuracy || {};
+          setData(raw);
+        }
       }
     } catch {
       // ignore

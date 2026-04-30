@@ -14,8 +14,8 @@ export default function LiveStatusCards() {
     if (!backendOnline) return;
 
     wukongFetch(`${FASTAPI}/api/dashboard/subsystems`)
-      .then((r) => r.json())
-      .then((data) => setSubsystems(data))
+      .then((r) => r.ok ? r.json() : Promise.reject())
+      .then((data) => { if (Array.isArray(data)) setSubsystems(data); })
       .catch(() => {});
   }, [refreshKey, backendOnline]);
 
