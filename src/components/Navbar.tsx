@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { NAV_LINKS } from "@/lib/constants";
 import { createClient } from "@/lib/supabase/client";
@@ -34,20 +35,26 @@ export default function Navbar() {
     window.location.href = "/";
   }
 
+  const highlightLinks = ["/lesson-generator", "/wukong-dashboard"];
+
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-[#0a0a0f]/80 backdrop-blur-xl border-b border-border-subtle"
+          ? "bg-[#0A0E27]/85 backdrop-blur-xl border-b border-border-subtle"
           : "bg-transparent"
       }`}
     >
-      <div className="mx-auto max-w-6xl flex items-center justify-between px-6 h-16">
-        {/* Logo */}
+      <div className="mx-auto max-w-7xl flex items-center justify-between px-6 h-16">
+        {/* Logo — 圖片 */}
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-accent-blue to-accent-green flex items-center justify-center group-hover:shadow-lg group-hover:shadow-accent-blue/50 transition-all duration-300">
-            <span className="text-white font-bold text-sm">AR</span>
-          </div>
+          <Image
+            src="/logo.png"
+            alt="AIRDA"
+            width={36}
+            height={36}
+            className="rounded-lg bg-white/90 p-0.5 group-hover:shadow-lg group-hover:shadow-accent-blue/40 transition-all duration-300"
+          />
           <div className="hidden sm:block">
             <div className="text-white font-bold text-sm leading-tight font-serif">AIRDA</div>
             <div className="text-text-secondary text-xs">協會</div>
@@ -61,7 +68,7 @@ export default function Navbar() {
               key={link.href}
               href={link.href}
               className={`text-sm transition-colors ${
-                link.href === "/lesson-generator"
+                highlightLinks.includes(link.href)
                   ? "text-accent-blue hover:text-accent-blue-light font-medium"
                   : "text-text-secondary hover:text-foreground"
               }`}
@@ -119,7 +126,7 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="md:hidden bg-[#0a0a0f]/95 backdrop-blur-xl border-b border-border-subtle">
+        <div className="md:hidden bg-[#0A0E27]/95 backdrop-blur-xl border-b border-border-subtle">
           <div className="flex flex-col px-6 py-4 gap-4">
             {NAV_LINKS.map((link) => (
               <Link
@@ -127,7 +134,7 @@ export default function Navbar() {
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
                 className={`text-base transition-colors ${
-                  link.href === "/lesson-generator"
+                  highlightLinks.includes(link.href)
                     ? "text-accent-blue hover:text-accent-blue-light font-medium"
                     : "text-text-secondary hover:text-foreground"
                 }`}

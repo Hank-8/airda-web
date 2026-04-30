@@ -6,18 +6,20 @@ export default function DashboardHeader() {
   const { backendOnline, wsConnected } = useDashboard();
 
   return (
-    <header className="relative bg-black/90 backdrop-blur-lg px-6 py-4 flex items-center justify-between">
+    <header className="relative bg-[#0A0E27]/90 backdrop-blur-lg px-6 py-4 flex items-center justify-between">
       <div className="flex items-center gap-3">
-        <span className="text-2xl">🐵</span>
-        <h1 className="text-xl font-bold tracking-wide text-accent-cyan">
-          孫悟空導師系統
+        <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-accent-blue to-accent-green flex items-center justify-center">
+          <span className="text-white font-bold text-sm">WK</span>
+        </div>
+        <h1 className="text-xl font-bold tracking-wide text-gradient font-serif">
+          悟空導師系統
         </h1>
-        <span className="text-xs text-gray-500 font-mono ml-2">
+        <span className="text-xs text-text-tertiary font-mono ml-2">
           WUKONG AI v1.0
         </span>
       </div>
       <div className="flex items-center gap-5 text-sm">
-        <span className="text-gray-400 font-mono">
+        <span className="text-text-tertiary font-mono">
           {new Date().toLocaleDateString("zh-Hant", {
             year: "numeric",
             month: "2-digit",
@@ -28,9 +30,9 @@ export default function DashboardHeader() {
         {/* 後端狀態 */}
         <div className="flex items-center gap-2">
           <span
-            className={`inline-block h-2 w-2 rounded-full ${backendOnline ? "bg-emerald-500" : "bg-red-500"}`}
+            className={`inline-block h-2 w-2 rounded-full ${backendOnline ? "bg-accent-green" : "bg-red-500"}`}
           />
-          <span className={`text-xs ${backendOnline ? "text-emerald-400" : "text-red-400"}`}>
+          <span className={`text-xs ${backendOnline ? "text-accent-green" : "text-red-400"}`}>
             FastAPI {backendOnline ? "在線" : "離線"}
           </span>
         </div>
@@ -38,9 +40,9 @@ export default function DashboardHeader() {
         {/* WebSocket 狀態 */}
         <div className="flex items-center gap-2">
           <span
-            className={`inline-block h-2 w-2 rounded-full ${wsConnected ? "bg-violet-500" : "bg-gray-600"}`}
+            className={`inline-block h-2 w-2 rounded-full ${wsConnected ? "bg-accent-blue" : "bg-gray-600"}`}
           />
-          <span className={`text-xs ${wsConnected ? "text-violet-400" : "text-gray-500"}`}>
+          <span className={`text-xs ${wsConnected ? "text-accent-blue" : "text-text-tertiary"}`}>
             WS {wsConnected ? "即時" : "離線"}
           </span>
         </div>
@@ -48,15 +50,15 @@ export default function DashboardHeader() {
         {/* 系統狀態 */}
         <div className="flex items-center gap-2">
           <span className="relative flex h-2.5 w-2.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent-green opacity-75" />
+            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-accent-green" />
           </span>
-          <span className="text-emerald-400">系統運行中</span>
+          <span className="text-accent-green">系統運行中</span>
         </div>
       </div>
 
       {/* 底部漸層線 */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent-cyan/40 to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-px gradient-line opacity-40" />
     </header>
   );
 }
